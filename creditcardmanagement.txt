@@ -1,3 +1,6 @@
+create database CreditCardManagementSystem;
+Use CreditCardManagementSystem;
+
 -- 7. Role Table
 CREATE TABLE Role (
   role_id INT AUTO_INCREMENT PRIMARY KEY,
