@@ -1,0 +1,295 @@
+-- 7. Role Table
+CREATE TABLE Role (
+  role_id INT AUTO_INCREMENT PRIMARY KEY,
+  role_name VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE User (
+  user_id INT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  password VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE User_Role (
+  user_role_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  role_id INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES User(user_id),
+  FOREIGN KEY (role_id) REFERENCES Role(role_id)
+);
+-- 11. Address Table
+CREATE TABLE Address (
+  address_id INT PRIMARY KEY,
+  customer_id INT NOT NULL,
+  street VARCHAR(200) NOT NULL,
+  city VARCHAR(100) NOT NULL,
+  state VARCHAR(100) NOT NULL,
+  zipcode VARCHAR(20) NOT NULL,
+  FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
+);
+
+
+-- 12. Application_Document Table
+CREATE TABLE Application_Document (
+  document_id INT PRIMARY KEY,
+  application_id INT NOT NULL,
+  document_name VARCHAR(100) NOT NULL,
+  document_path longtext NOT NULL,
+  FOREIGN KEY (application_id) REFERENCES Application(application_id)
+);
+-- 9. Audit_Log Table
+CREATE TABLE Audit_Log (
+  log_id INT PRIMARY KEY,
+  user_id INT NOT NULL,
+  action VARCHAR(200) NOT NULL,
+  timestamp DATETIME NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
+-- 3. Application Table
+CREATE TABLE Application (
+  application_id INT PRIMARY KEY,
+  customer_id INT NOT NULL,
+  status VARCHAR(50) NOT NULL,
+  submission_date DATE NOT NULL,
+  FOREIGN KEY (customer_id) REFERENCES user(user_id)
+);
+
+CREATE VIEW customer AS
+SELECT u.user_id, u.username, u.email, r.role_name
+FROM User u
+LEFT JOIN User_Role ur ON u.user_id = ur.user_id
+LEFT JOIN Role r ON ur.role_id = r.role_id where r.role_name = 'customer';
+
+
+
+CREATE VIEW CreditCardApplications AS
+SELECT
+  u.user_id,
+  u.FullName,
+  u.DOB,
+  u.Email,
+  u.PhoneNumber,
+  uad.street,
+  uad.city,
+  uad.state,
+  uad.zipcode,
+  a.status,
+  a.submission_date,
+  ad1.document AS ProofOfAddress,
+  ad2.document AS PaySlip
+FROM user u
+LEFT JOIN address uad ON u.user_id = uad.customer_id
+LEFT JOIN Application a ON u.user_id = a.customer_id
+LEFT JOIN (
+  SELECT application_id,
+         MAX(CASE WHEN document_name = 'ProofOfAddress' THEN document_name END) AS document_name,
+         MAX(CASE WHEN document_name = 'ProofOfAddress' THEN document END) AS document
+  FROM Application_Document
+  GROUP BY application_id
+) ad1 ON a.application_id = ad1.application_id
+LEFT JOIN (
+  SELECT application_id,
+         MAX(CASE WHEN document_name = 'PaySlip' THEN document_name END) AS document_name,
+         MAX(CASE WHEN document_name = 'PaySlip' THEN document END) AS document
+  FROM Application_Document
+  GROUP BY application_id
+) ad2 ON a.application_id = ad2.application_id
+WHERE a.customer_id = u.user_id
+  AND (ad1.document_name IS NOT NULL OR ad1.document IS NOT NULL OR ad2.document_name IS NOT NULL OR ad2.document IS NOT NULL);
+
+CREATE TABLE Document_Category (
+  category_id INT PRIMARY KEY,
+  category_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Credit_Score (
+  score_id INT AUTO_INCREMENT PRIMARY KEY,
+  customer_id INT NOT NULL,
+  score INT NOT NULL,
+  assessment_date varchar(50),
+  FOREIGN KEY (customer_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE CreditCard (
+  credit_card_id INT PRIMARY KEY,
+  customer_id INT NOT NULL,
+  credit_limit DECIMAL(10,2) NOT NULL,
+  issue_date DATE NOT NULL,
+  FOREIGN KEY (customer_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE Credit_Card_Reward (
+  reward_id INT PRIMARY KEY,
+  credit_card_id INT NOT NULL,
+  reward_points INT NOT NULL,
+  reward_date TIMESTAMP,
+  FOREIGN KEY (credit_card_id) REFERENCES CreditCard(credit_card_id)
+);
+
+CREATE TABLE Credit_Card_Approval_Log (
+  approval_log_id INT Auto_increment PRIMARY KEY,
+  application_id INT NOT NULL,
+  approval_status VARCHAR(50) NOT NULL,
+  customer_id INT NOT NULL,
+  approval_date timestamp,
+  FOREIGN KEY (application_id) REFERENCES Application(application_id),
+  FOREIGN KEY (customer_id) REFERENCES User(user_id)
+);
+
+CREATE TABLE Credit_Card_Transaction (
+  transaction_id INT Auto_increment PRIMARY KEY,
+  credit_card_id INT NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  transaction_date timestamp,
+  description VARCHAR(200) NOT NULL,
+  FOREIGN KEY (credit_card_id) REFERENCES CreditCard(credit_card_id)
+);
+CREATE TABLE `Previous_Credit_Card_Transaction` (
+  `transaction_id` int NOT NULL AUTO_INCREMENT,
+  `credit_card_id` int NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `transaction_date` varchar(30) DEFAULT NULL,
+  `description` varchar(200) NOT NULL,
+  PRIMARY KEY (`transaction_id`),
+  KEY `credit_card_id` (`credit_card_id`),
+  CONSTRAINT `prevcredit_card_transaction_ibfk_1` FOREIGN KEY (`credit_card_id`) REFERENCES `creditcard` (`credit_card_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=686 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE Credit_Limit_Change_Log (
+  change_log_id INT Auto_increment PRIMARY KEY,
+  credit_card_id INT NOT NULL,
+  old_limit DECIMAL(10,2) NOT NULL,
+  new_limit DECIMAL(10,2) NOT NULL,
+  change_timestamp varchar(20) NOT NULL,
+  FOREIGN KEY (credit_card_id) REFERENCES CreditCard(credit_card_id)
+);
+
+
+CREATE TABLE Payment (
+  payment_id INT Auto_increment PRIMARY KEY,
+  credit_card_id INT NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  payment_date timestamp,
+  FOREIGN KEY (credit_card_id) REFERENCES CreditCard(credit_card_id)
+);
+
+CREATE TABLE Reward_Catalogue (
+  reward_item_id INT Auto_increment PRIMARY KEY,
+  item_name VARCHAR(100) NOT NULL,
+  points_required INT NOT NULL
+);
+
+INSERT INTO Reward_Catalogue (item_name, points_required) VALUES
+('1000 Airline Miles (10% off)', 10000),
+('$50 Amazon Gift Card (5% off)', 5000),
+('Bluetooth Headphones (15% off)', 15000),
+('Fitbit Charge 5 (12% off)', 20000),
+('Instant Pot Duo Nova (18% off)', 25000),
+('Nintendo Switch Console (20% off)', 40000),
+('North Face Backpack (10% off)', 18000),
+('Nespresso Vertuo Next (14% off)', 22000),
+('Sephora Beauty Box (8% off)', 8000),
+('Sony WH-1000XM4 Headphones (18% off)', 30000),
+('Starbucks Gift Card (10 drinks, 5% off)', 4000),
+('Thermomix TM6 (22% off)', 50000),
+('Tile Pro Tracking Device (12% off)', 12000),
+('Yeti Tundra Haul Cooler (16% off)', 28000),
+('Apple Watch Series 8 (18% off)', 35000),
+('Bose QuietComfort Earbuds (14% off)', 20000),
+('DJI Mavic Air 2 Drone (20% off)', 45000),
+('Dyson V15 Detect Vacuum (18% off)', 32000),
+('KitchenAid Artisan Mixer (15% off)', 25000),
+('Oculus Quest 2 VR Headset (20% off)', 40000);
+
+DELIMITER //
+
+CREATE TRIGGER After_Application_Status_Update
+AFTER UPDATE ON Application
+FOR EACH ROW
+BEGIN
+    IF NEW.status = 'Approved' AND OLD.status != 'Approved' THEN
+        -- Insert into CreditCard table
+        INSERT INTO CreditCard (customer_id, credit_limit, issue_date)
+        VALUES (NEW.customer_id, 50000, NOW());
+
+        -- Get the last inserted credit card ID
+        SET @last_inserted_credit_card_id = LAST_INSERT_ID();
+
+        -- Insert into Credit_Card_Reward table
+        INSERT INTO Credit_Card_Reward (credit_card_id, reward_points, reward_date)
+        VALUES (@last_inserted_credit_card_id, 10, NOW());
+
+        -- Insert into Credit_Card_Approval_Log table
+        INSERT INTO Credit_Card_Approval_Log (application_id, approval_status, customer_id, approval_date)
+        VALUES (NEW.application_id, 'Approved', NEW.customer_id, NOW());
+
+    END IF;
+END//
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE TRIGGER Set_Expiry_Date
+BEFORE INSERT ON Credit_Card_Reward
+FOR EACH ROW
+BEGIN
+    SET NEW.expiry_date = DATE_ADD(NEW.reward_date, INTERVAL 10 DAY);
+END//
+
+DELIMITER ;
+
+
+-- Create a trigger to move data from Credit_Card_Transaction to Previous_Credit_Card_Transaction and delete from Credit_Card_Transaction after a payment is inserted
+DELIMITER //
+CREATE TRIGGER after_payment_insert
+AFTER INSERT ON Payment
+FOR EACH ROW
+BEGIN
+    -- Move data from Credit_Card_Transaction to Previous_Credit_Card_Transaction
+    INSERT INTO Previous_Credit_Card_Transaction (credit_card_id, amount, transaction_date, description)
+    SELECT credit_card_id, amount, transaction_date, description
+    FROM Credit_Card_Transaction
+    WHERE credit_card_id = NEW.credit_card_id;
+
+    -- Delete data from Credit_Card_Transaction
+    DELETE FROM Credit_Card_Transaction
+    WHERE credit_card_id = NEW.credit_card_id;
+END;
+//
+DELIMITER ;
+
+
+create view ApprovedApplications as
+select u.user_id,
+  u.FullName,
+  u.DOB,
+  u.Email,
+  u.PhoneNumber,
+  uad.street,
+  uad.city,
+  uad.state,
+  uad.zipcode,
+  c.credit_limit from user u 
+LEFT JOIN address uad ON u.user_id = uad.customer_id
+left join creditcard c on u.user_id = c.customer_id
+left join application a on u.user_id = a.customer_id where a.status = 'Approved'
+
+
+DELIMITER //
+
+CREATE TRIGGER credit_limit_change_trigger AFTER UPDATE ON creditcard
+FOR EACH ROW
+BEGIN
+    IF OLD.credit_limit != NEW.credit_limit THEN
+        INSERT INTO credit_limit_change_log (credit_card_id, old_limit, new_limit, change_timestamp)
+        VALUES (OLD.credit_card_id, OLD.credit_limit, NEW.credit_limit, NOW());
+    END IF;
+END;
+//
+
+DELIMITER ;

@@ -1,0 +1,13 @@
+.action-buttons{
+    display:flex;
+    column-gap: 10px;
+}
+.show-applicant-details{
+    display: flex;
+    width:400px;
+    margin-top: 20px;
+    align-items: end;
+}
+.show-applicant-details > span:last-child{
+    margin-left: auto;
+}

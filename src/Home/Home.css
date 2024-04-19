@@ -1,0 +1,129 @@
+.no-applications-message{
+    margin: auto;
+    margin-top: 5%;
+    color: red;
+    text-align: center;
+    justify-content: center;
+    padding-top: 10%;
+    width: 80%;
+    height: 50vh;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 20px;
+    font-size: xx-large;
+}
+
+.gridTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 16px;
+    overflow-x: auto;
+}
+
+.gridTable thead {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+.gridTable th, .gridTable td {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+}
+
+.gridTable tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+.gridTable tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Responsive styles for mobile devices */
+/* @media (max-width: 768px) {
+    .gridTable {
+        width: 100%;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+
+    .btn-success {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+} */
+.customer-details-outer-container{
+    gap: 20px;
+    margin: auto;
+    border-radius: 20px;
+    margin-top: 5%;
+    padding: 2%;
+    width: 90%;
+    min-width: 80vh;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.customer-details{
+    /* align-items: center; */
+    /* text-align: center; */
+   
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+.customer-details-section{
+    display: grid;
+    grid-template-columns: 12% 65%;
+    gap: 20%;
+    align-items: center;
+}
+.customer-details-section>span:first-child,.customer-details-documents-section>span:first-child{
+    color: rgba(28,43,104,1);
+    font-size: large;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+.customer-details-documents-section{
+    display: grid;
+    gap: 10px;
+}
+.not-approved{
+    color: red;
+}
+.approved{
+    color: green;
+    font-weight: 500;
+}
+.no-bill-message{
+    padding: 50px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: larger;
+}
+.billing>span:first-child{
+    text-align: start;
+}
+.billing>span:last-child{
+    text-align: end;
+}
+.bills-button-section{
+    display: flex;
+    margin-top: 50px;
+    justify-content: space-around;
+}
+.billing{
+    align-items: baseline;
+    margin-top: 30px;
+}
+.billing-amount{
+    width: 15%;
+    margin-left: auto;
+}
+.Modal-button{
+    margin: auto;
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+}
+.modal-add-transaction{
+    display: flex;
+}

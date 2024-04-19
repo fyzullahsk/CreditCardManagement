@@ -1,24 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
-
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import Login from './Login/Login';
+import Register from './Register/Register';
+import Home from '../src/Home/Home';
+import Application from './Application/Application';
+import Admin from './Admin/Admin';
+import Bill from './Home/Bill';
+import CreditLimitUpdate from './Admin/CreditLimitUpdate';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+        <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/application" element={<Application />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/bill/:credit_card_id" element={<Bill />} />
+        <Route path="/limitHandler" element={<CreditLimitUpdate />} />
+        {/* <Route path="/login" element={<Login />} /> */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 

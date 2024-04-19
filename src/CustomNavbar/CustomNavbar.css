@@ -1,0 +1,32 @@
+.navbar{
+    height: 80px;
+    background: radial-gradient(circle, rgba(28,43,104,1) 0%, rgba(89,21,77,1) 100%);
+    color: white;
+}
+.navbar-brand ,.nav-link{
+
+    color: white !important;
+}
+.nav-link:last-child{
+    margin-top: 0;
+    margin-left: 20px;
+}
+.bell-icon{
+    cursor: pointer;
+    margin-top: 20px;
+fill: white;
+font-size: 20px;
+}
+.notification-container{
+    margin-top: 10px;
+    border-radius: 5px;
+    width: 300px;
+    background-color: rgba(89,21,77,1);
+    text-align: center;
+    font-size: large;
+    font-weight: 500;
+    color: lightgray;
+    padding: 20px;
+    position: absolute;
+    right:5%;
+}

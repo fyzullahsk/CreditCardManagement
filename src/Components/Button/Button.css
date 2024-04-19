@@ -1,0 +1,46 @@
+.primary{
+    color: white;
+    background-color: rgba(28,43,104,1);
+    min-width: 150px;
+    max-width: 350px;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 20px;
+  }
+  .default-button {
+    color: white;
+    cursor: pointer;
+  }
+  
+  .disabled-button {
+    cursor: not-allowed;
+  }
+
+  .download{
+    color: white;
+    background-color: rgba(28,43,104,1);
+    width: 70px;
+    padding: 10px 10px;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 15px;
+  }
+  .Reject{
+    color: white;
+    background-color: red;
+    width: 70px;
+    padding: 10px 10px;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 15px;
+  }
+  .Approve{
+    color: white;
+    background-color: green;
+    width: 90px;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 15px;
+  }

@@ -1,0 +1,38 @@
+.application-outer-container{
+    margin: auto;
+    margin-top: 5%;
+    width: 50%;
+    min-height: 50vh;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 20px;
+}
+.customer-Details-outer-Container{
+    padding: 50px;
+}
+.application-buttions-section{
+    display: flex;
+}
+.nextButtonStyle{
+    background-color: rgba(28, 43, 104, 1);
+    color: white;
+    height: 40px;
+    border-radius: 10px;
+    width: 15%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 50%;
+    border: none;
+    cursor: pointer;
+}
+.prevButtonStyle{
+    background-color: rgba(28, 43, 104, 1);
+    color: white;
+    height: 40px;
+    border-radius: 10px;
+    width: 15%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 10%;
+    border: none;
+    cursor: pointer;
+}
