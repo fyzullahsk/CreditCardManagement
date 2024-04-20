@@ -10,6 +10,8 @@
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 20px;
     font-size: xx-large;
+    background-color: lightgray;
+
 }
 
 .gridTable {
@@ -30,8 +32,8 @@
     border: 1px solid #ddd;
 }
 
-.gridTable tbody tr:nth-child(odd) {
-    background-color: #f2f2f2;
+.gridTable tbody tr {
+    background-color: lightgray;
 }
 
 .gridTable tbody tr:hover {
@@ -62,6 +64,7 @@
     width: 90%;
     min-width: 80vh;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background: lightgray;
 }
 .customer-details{
     /* align-items: center; */

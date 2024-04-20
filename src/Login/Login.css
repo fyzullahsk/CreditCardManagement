@@ -3,8 +3,9 @@
     margin: 5% auto;
     width: 30%;
     border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 60px;
-}
+    background-color: lightgray;
+    /* box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 60px; */
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;}
 .form {
     margin-left: 60px;
     margin-top: 30px;
@@ -20,8 +21,8 @@
     color: black;
     padding-top: 20px;
     border: none;
-    /* background-color: #f1f1f1; */
-    border-bottom: 3px solid lightgray;
+    background-color: transparent;
+    border-bottom: 3px solid gray;
     /* border-radius: 20px; */
   }
   .form input:disabled {
@@ -35,7 +36,7 @@
     height: 100%;
     pointer-events: none;
     
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid gray;
     /* border-bottom: 1px solid white; */
   }
   
@@ -56,6 +57,7 @@
     /* bottom: 50%; left: 30%; */
     bottom: 0;
     left: 0;
+    color: black;
     padding-bottom: 5px;
     transition: all 0.3s ease;
   }
@@ -85,6 +87,9 @@
     transform: translateX(0%);
   }
 .login-input-buttons{
-    margin-left: 20%;
+    margin-left: 18%;
     margin-top: 20px;
+}
+.title{
+  color: black;
 }

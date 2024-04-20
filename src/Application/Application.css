@@ -8,6 +8,8 @@
 }
 .customer-Details-outer-Container{
     padding: 50px;
+    background-color: lightgray;
+    border-radius: 20px;
 }
 .application-buttions-section{
     display: flex;
