@@ -29,13 +29,24 @@ con.connect((err) => {
 });
 
 app.post("/register", (req, res) => {
-  const { FullName, DOB, Email, PhoneNumber, Password, UserType } = req.body;
+  const { FullName, DOB, Email, PhoneNumber, Password } = req.body;
+  console.log(FullName, DOB, Email, PhoneNumber, Password);
   con.query('SELECT COUNT(*) AS count FROM user WHERE Email = ? ', [Email],(regerr,regres)=>{
-    console.log(regres[0].count);
+    if(regerr)
+    {
+      console.log(regerr);
+    }
     if(regres[0].count == 0){
       con.query('INSERT INTO user (FullName, DOB, Email, PhoneNumber, Password) VALUES (?, ?, ?, ?, ?)',[FullName, DOB, Email, PhoneNumber, Password],(insErr,insRes)=>{
-        if(regres){
-          res.json({ status: "Success", message:'User Registered' });
+        if(insRes){
+          console.log(insRes.insertId);
+          con.query('insert into user_role (user_id, role_id) values (?,1)',[insRes.insertId],(roleerr,roleres)=>{
+            if(roleres)
+            {
+
+              res.json({ status: "Success", message:'User Registered' });
+            }
+          })
         }
       })
     }
